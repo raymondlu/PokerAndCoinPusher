@@ -116,7 +116,8 @@ public sealed class ChangeSceneAndComponentSearchWindow : EditorWindow {
         .FindObjectsOfTypeAll<EditorWindow>()
         .First(c => c.GetType().ToString() == "UnityEditor.ProjectBrowser");
         ;
-        var sceneViewType = Types.GetType("UnityEditor.ProjectBrowser", "UnityEditor.dll");
+        //var sceneViewType = Types.GetType("UnityEditor.ProjectBrowser", "UnityEditor.dll");
+        var sceneViewType = Assembly.Load("UnityEditor.dll").GetType("UnityEditor.ProjectBrowser");
         MethodInfo shoeMethod = null;
         MethodInfo[] sceneViewMethods = sceneViewType.GetMethods();
 
@@ -290,10 +291,10 @@ public sealed class ChangeSceneAndComponentSearchWindow : EditorWindow {
 
         if (!show || (!Application.isPlaying && !showInEditor)) {
             GUILayout.Label("ProfilerMemInfo", GUILayout.Width(530));
-            uint monoUsed = Profiler.GetMonoUsedSize();
-            uint monoSize = Profiler.GetMonoHeapSize();
-            uint totalUsed = Profiler.GetTotalAllocatedMemory();
-            uint totalSize = Profiler.GetTotalReservedMemory();
+            uint monoUsed = UnityEngine.Profiling.Profiler.GetMonoUsedSize();
+            uint monoSize = UnityEngine.Profiling.Profiler.GetMonoHeapSize();
+            uint totalUsed = UnityEngine.Profiling.Profiler.GetTotalAllocatedMemory();
+            uint totalSize = UnityEngine.Profiling.Profiler.GetTotalReservedMemory();
             string memsize = string.Format(
             "mono:{0}/{1} kb({2:f1}%)\n" +
             "total  :{3}/{4} kb({5:f1}%)\n",
